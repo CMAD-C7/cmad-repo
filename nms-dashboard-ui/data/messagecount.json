@@ -1,6 +1,6 @@
 [
     {
-        "Error": 10000000000000000,
+        "Error": 100,
         "Warning": 5000,
         "Notification": 6000
     }
