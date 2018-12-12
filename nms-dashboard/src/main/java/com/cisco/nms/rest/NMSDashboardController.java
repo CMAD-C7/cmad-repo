@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,40 +32,50 @@ import com.cisco.nms.service.MessageService;
 @RequestMapping(value = "/message")
 public class NMSDashboardController {
 	
+	private static Logger LOGGER = LogManager.getFormatterLogger(NMSDashboardController.class);
+	
 	@Autowired
 	private MessageService messageService;
-
-	
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Message> add(@RequestBody Message message, UriComponentsBuilder builder) {
+	public ResponseEntity<Message> createMessage(@RequestBody Message message, UriComponentsBuilder builder) {
+		
+		LOGGER.debug("Start of createMessage method. message={}", message);
 		messageService.add(message);
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(builder.path("/message/{id}").buildAndExpand(message.getId()).toUri());
+		headers.setLocation(builder.path("/{id}").buildAndExpand(message.getId()).toUri());
 		return new ResponseEntity<Message>(message, headers, HttpStatus.CREATED);
 	}
 	
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Message> add(@PathVariable("id") Long id) {
+	public ResponseEntity<Message> getMessage(@PathVariable("id") Long id) {
+		
+		LOGGER.debug("Start of getMessage method. id={}", id);
 		Optional<Message> optional = messageService.findById(id);
 		return new ResponseEntity<Message>(optional.get(), HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Message>> searchMessages() {
-		Sort sort =  Sort.by(new Sort.Order(Direction.ASC, "dateAdded"));
-		PageRequest pageRequest =  PageRequest.of(0, 5, sort);
-		return new ResponseEntity<List<Message>>(messageService.findByDateAddedBetween(new Date(), new Date(), pageRequest), HttpStatus.OK);
+	public ResponseEntity<List<Message>> searchMessages(Pageable pageRequest) {
+		
+		LOGGER.debug("Start of searchMessages method. pageRequest={}", pageRequest);
+		Date currentDate = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(currentDate);
+		c.add(Calendar.HOUR_OF_DAY, -24);
+		return new ResponseEntity<List<Message>>(messageService.findByDateAddedBetween(c.getTime(), currentDate, pageRequest), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<List<MessageCountDTO>> getMessageCount() {
+		
+		LOGGER.debug("Start of getMessageCount method.");
 		Date currentDate = new Date();
 		Calendar c = Calendar.getInstance();
-		c.setTime(currentDate); // Now use today date.
-		c.add(Calendar.DATE, -1);
+		c.setTime(currentDate);
+		c.add(Calendar.HOUR_OF_DAY, -24);
 		return new ResponseEntity<List<MessageCountDTO>>(messageService.getMessageCount(currentDate, c.getTime()), HttpStatus.OK);
 	}
 	
