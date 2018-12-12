@@ -7,14 +7,14 @@ class TableComponent extends React.Component {
     }
     render() {
         // Data
-        var dataColumns = this.props.columns;
-        var dataRows = this.props.data;
+        var columns = this.props.columns;
+        var rows = this.props.data;
 
         var tableHeaders = (<thead>
             <tr key='tableheader'>
                 {
-                    dataColumns.map(function (column) {
-                        return <th key={column}>{column}</th>;
+                    columns.map(function (column) {
+                        return <th key={column.Header}>{column.Header}</th>;
                     }
                     )
                 }
@@ -24,15 +24,16 @@ class TableComponent extends React.Component {
         var tableBody = (
             <tbody>
                 {
-                    dataRows.map(function (row, index) {
+                    rows.map(function (row, index) {
                         return <tr key={index}>
                             {
-                                dataColumns.map(function (column) {
-                                    return <td key={column}>{row[column]}</td>;
+                                columns.map(function (column) {
+                                    return <td key={column.accessor}>{row[column.accessor]}</td>;
                                 })
                             }
                         </tr>
                     })
+
                 }
             </tbody>);
 

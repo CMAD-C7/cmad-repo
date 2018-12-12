@@ -1,7 +1,13 @@
 [
     {
-        "Error": 1000,
-        "Warning": 5000,
-        "Notification": 6000
+        "messageType": "Notification",
+        "count": 5
+    },   {
+        "messageType": "Error",
+        "count": 2
+    },
+    {
+        "messageType": "Warning",
+        "count": 3
     }
 ]

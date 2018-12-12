@@ -3,18 +3,57 @@ import TableComponent from "./TableComponent.jsx";
 import store from "../stores/store.js";
 
 class MessageCountTable extends React.Component {
+
     constructor(props) {
         super(props);
-        store.subscribe(()=>{
+        store.subscribe(() => {
             this.forceUpdate();
         });
     }
 
+    getMessageCount() {
+        var notificationCount = 0, errorCount = 0, warningCount = 0;
+        var messagecount = store.getState().messagecount;
+
+        messagecount.map(function (row) {
+            if (row.messageType === 'Notification') {
+                notificationCount = row.count;
+            } else if (row.messageType === 'Error') {
+                errorCount = row.count;
+            } else if (row.messageType === 'Warning') {
+                warningCount = row.count;
+            }
+        })
+
+        const data = [
+            {
+                "messageType": "Notification",
+                "count": notificationCount
+            },
+            {
+                "messageType": "Warning",
+                "count": warningCount
+            }, {
+                "messageType": "Error",
+                "count": errorCount
+            }
+        ]
+
+        return data;
+    }
+
     render() {
-        const tableColumns = ["Error","Warning","Notification"];
-        const tableData = store.getState().messagecount;
+
+        const columns = [{
+            Header: 'Message Type',
+            accessor: 'messageType' // String-based value accessors!
+        }, {
+            Header: 'Count',
+            accessor: 'count',
+        }]
+        const data = this.getMessageCount();
         return (
-            <div><TableComponent columns={tableColumns} data={tableData}></TableComponent></div>
+            <div><TableComponent columns={columns} data={data}></TableComponent></div>
         );
     }
 }
