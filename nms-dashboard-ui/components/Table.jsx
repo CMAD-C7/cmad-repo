@@ -1,7 +1,7 @@
 import React from "react";
 import store from "../stores/store.js";
 
-class TableComponent extends React.Component {
+class Table extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -44,4 +44,4 @@ class TableComponent extends React.Component {
     }
 }
 
-export default TableComponent;
+export default Table;

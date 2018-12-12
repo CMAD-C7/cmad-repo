@@ -1,5 +1,5 @@
 import React from "react";
-import TableComponent from "./TableComponent.jsx";
+import Table from "./Table.jsx";
 import store from "../stores/store.js";
 
 class MessageCountTable extends React.Component {
@@ -53,7 +53,7 @@ class MessageCountTable extends React.Component {
         }]
         const data = this.getMessageCount();
         return (
-            <div><TableComponent columns={columns} data={data}></TableComponent></div>
+            <div><Table columns={columns} data={data}></Table></div>
         );
     }
 }
