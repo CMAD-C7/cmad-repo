@@ -1,6 +1,7 @@
 import React from "react";
 import IntervalSelector from "./IntervalSelector.jsx";
 import MessageCountTable from "./MessageCountTable.jsx";
+import MessageInfiniteScroll from "./MessageInfiniteScroll.jsx";
 import fetchMessageCount from "../rest/ajax.js";
 
 class MessageApp extends React.Component {
@@ -28,6 +29,9 @@ class MessageApp extends React.Component {
                 <IntervalSelector updateInterval={this.updateInterval} defaultInterval={this.defaultInterval}></IntervalSelector>
                 <br/>
                 <MessageCountTable></MessageCountTable>
+                <br/>
+                <br/>
+                <MessageInfiniteScroll></MessageInfiniteScroll>
             </div>
         );
     }
