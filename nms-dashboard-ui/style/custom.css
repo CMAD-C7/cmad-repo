@@ -1,0 +1,36 @@
+.wrap {
+    width: 1200px;
+    height: 600px;
+}
+
+.wrap table {
+    width: 1200px;
+    table-layout: fixed;
+}
+
+table tr td {
+    padding: 5px;
+    border: 1px solid #eee;
+    word-wrap: break-word;
+}
+
+table.head tr td {
+    background: #eee;
+    font-weight: bold; 
+}
+
+table tr th {
+    padding: 5px;
+    border: 1px solid #eee;
+    word-wrap: break-word;
+    background: #eee;
+}
+
+table {
+    border: 1px
+}
+
+.inner_table {
+    height: 400px;
+    overflow-y: auto;
+}

@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,15 +58,15 @@ public class MessageController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Message>> searchMessages(Pageable pageRequest) {
+	public ResponseEntity<Page<Message>> searchMessages(Pageable pageRequest) {
 
 		LOGGER.debug("Start of searchMessages method. pageRequest={}", pageRequest);
 		Date currentDate = new Date();
 		Calendar c = Calendar.getInstance();
 		c.setTime(currentDate);
 		c.add(Calendar.HOUR_OF_DAY, -24);
-		return new ResponseEntity<List<Message>>(
-				messageService.findByDateAddedBetween(c.getTime(), currentDate, pageRequest), HttpStatus.OK);
+		Page<Message> page = new PageImpl<Message>(messageService.findByDateAddedBetween(c.getTime(), currentDate, pageRequest));
+		return new ResponseEntity<Page<Message>>(page, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
