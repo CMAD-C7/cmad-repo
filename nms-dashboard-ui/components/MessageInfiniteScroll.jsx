@@ -42,7 +42,7 @@ class MessageInfiniteScroll extends React.Component {
         }
     }
 
-    loadLatestMessages(size = 10, sort = "dateAdded,desc") {
+    loadLatestMessages(size = 100, sort = "dateAdded,desc") {
 
         if (this.state.requestSent) {
             return;
@@ -68,7 +68,7 @@ class MessageInfiniteScroll extends React.Component {
     }
 
 
-    loadMoreMessages(page = 0, size = 10, sort = "dateAdded,desc") {
+    loadMoreMessages(page = 0, size = 100, sort = "dateAdded,desc") {
 
         if (this.state.requestSent) {
             return;
