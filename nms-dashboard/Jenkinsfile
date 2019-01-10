@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                sh 'mvn -Dmaven.test.failure.ignore=true clean compile'
+                sh 'mvn mvn -f /nms-dashboard/pom.xml -Dmaven.test.failure.ignore=true clean compile'
             }
             }
 
