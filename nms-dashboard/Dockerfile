@@ -1,5 +1,5 @@
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG JAR_FILE
-COPY ${JAR_FILE} nms-dashboard.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/nms-dashboard.jar"]
+FROM java:8-jre-alpine
+WORKDIR /
+COPY --from=build /code/target/nms-dashboard-*.jar app
+EXPOSE 8080 
+CMD java -jar app 
