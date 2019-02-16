@@ -1,8 +1,11 @@
-FROM maven:3.6-jdk-8-alpine
+FROM maven as build
 WORKDIR /opt/SyslogServer
 COPY . .
-RUN mvn compile
-RUN mvn -DskipTests package
-RUN cd target
-EXPOSE 8080
-CMD java -jar nms-dashboard.jar
+RUN mvn clean -DSkipTests package
+
+
+FROM java:8
+WORKDIR /opt/
+EXPOSE 8443
+COPY --from=build /opt/SyslogServer/target/nms-*.jar .
+CMD java -jar *.jar
